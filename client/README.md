@@ -12,8 +12,7 @@ npx tailwindcss init
     # alertas
 npm i sweetalert2 
 
-    # variables de entorno. Normalmente no se suben a git.
-npm i dotenv
+    # variables de entorno. se encuentra en la carpeta data/url.js Normalmente no se suben a git.
 
 npm i react-router-dom
 

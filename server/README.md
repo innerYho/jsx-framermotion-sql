@@ -16,7 +16,8 @@ FLUSH PRIVILEGES;
 
 ALTER USER 'devuser'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 
-
+    # Correr servidor
+npm run start
 
     # variables de entorno. Normalmente no se suben a git.
 npm i dotenv
@@ -25,3 +26,8 @@ npm i dotenv
 No funcionaron pero la sintaxis era correcta
  GRANT ALL PRIVILEGES ON . TO 'devuser'@'localhost' WITH GRANT OPTION; 
 GRANT ALL PRIVILEGES ON db_water.* TO 'devuser'@'%' WITH GRANT OPTION; -->
+
+urls[
+    http://localhost:9876/search
+    http://localhost:9876/create
+]
