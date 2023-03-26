@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 // import dotenv from 'dotenv';
 
-export default function FormUpdate({ medida, url }) {
+export default function FormUpdate({ medida, last_volume, url }) {
     // const navigate = useNavigate()
     // dotenv.config({ path: ".env" })
     // const key = process.env.API_KEY;
@@ -14,15 +14,19 @@ export default function FormUpdate({ medida, url }) {
 
     const sendForm = async (e) => {
         try {
+            var transMedida
             e.preventDefault()
             // e.target.reset()
             // let res = await axios.post(`config.urlServer`,{
-            let res = await axios.post(`${url}`, {
+            medida === 'mm' ? transMedida = in_add
+                : medida === 'cm' ? transMedida = in_add * 1000
+                    : transMedida = in_add * 1000000
+            let res = await axios.post(`${url}/create`, {
                 // wtr_id: ,
-                wtr_volume_mlt: 1,
+                wtr_volume_mlt: transMedida,
                 wtr_add_remove: 1,
-                // wtr_date: ,
-                wtr_last_volume: 1
+                wtr_date: now(),
+                wtr_last_volume: last_volume + transMedida
             });
             Swal.fire(res.data.err ? res.data.err : res.data.msg);
 
@@ -34,16 +38,16 @@ export default function FormUpdate({ medida, url }) {
         <>
             <h3>Agregar </h3>
             <form onSubmit={sendForm}>
-                <input type="text" className='form-control mb-4 in_add' id='in_add' onChange={(e) => setIn_add(e.target.value)} />
-                <label htmlFor="">{medida}</label>
-                {/* <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button> */}
+                <div className="form-group col-md-4">
+                    <input type="text" className='form-control mb-4 in_add' id='in_add' onChange={(e) => setIn_add(e.target.value)} />
+                    <label htmlFor="in_add">{medida}</label>
+                </div>
+
                 <button
-                    className="form-control btn btn-outline-danger"
+                    className="form-control btn btn-outline-danger p-10"
                     type="submit"
                 >
-                    Guardar Actualización
+                    Guardar
                 </button>
             </form>
         </>
