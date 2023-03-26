@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const conn = require("express-myconnection");
 const cors = require("cors");
 // const path = require("path");
-
+const dotenv = require("dotenv");
 const app = express();
 app.set("port", process.env.PORT || 9876);
 const dbConfig = {

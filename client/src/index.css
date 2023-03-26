@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -19,6 +19,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -47,9 +48,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -60,10 +63,56 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+
+  background: rgb(146, 205, 241);
+
+  /* Center element */
+  display: grid;
+  place-content: center;
+  height: 80vh;
+}
+
+.box {
+  display: flex;
+  /* align-items: center; */
+  place-content: center;
+  font-weight: bold;
+  font-size: 21px;
+  width: 120px;
+  height: 120px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+button {
+  /* background: ; */
+  border: none;
+  border-radius: 10px;
+}
+
+
+.card {
+  margin-top: 200px;
 }
