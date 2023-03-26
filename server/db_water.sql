@@ -4,7 +4,7 @@ CREATE TABLE tbl_water(
 wtr_id int(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 wtr_volume_mlt int(5) NOT NULL,
 wtr_add_remove tinyint(1) NOT NULL,
-wtr_date timestamp NOT NULL,
+wtr_date timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 wtr_last_volume int(5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 

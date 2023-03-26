@@ -28,11 +28,15 @@ exports.search = (req, res) => {
 exports.create = (req, res) => {
     req.getConnection((err, conn) => {
         if (err) return res.send(err)
-        conn.query("INSERT INTO tbl_water", [req.body],
-            (err, rows) => {
+        conn.query("INSERT INTO tbl_water set ?", [req.body],
+            (err, result) => {
                 console.log(err ? "Err ctrl.create"
                     : "create Ok!")
-                res.json(err ? { err: msg.createErr } : { msg: msg.createOk })
+                res.json(
+                    // !err ? { message: "ingreso exítoso", msg: msg.createOk, result } : { error: `Sucedio un error al guardar los datos: ${err}` }
+                    !err ? { msg: msg.createOk, message: "ingreso exítoso" } : { err: msg.createErr }
+
+                );
             }
         )
     }

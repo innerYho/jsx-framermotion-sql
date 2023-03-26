@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
     // read
     searchErr: {
         position: "top-end",

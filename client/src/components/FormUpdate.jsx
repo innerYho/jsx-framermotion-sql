@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 // import dotenv from 'dotenv';
 
-export default function FormUpdate({ medida, last_volume, url }) {
+export default function FormUpdate({ medida, last_volume, setAvailablemm, url }) {
     // const navigate = useNavigate()
     // dotenv.config({ path: ".env" })
     // const key = process.env.API_KEY;
@@ -21,13 +21,17 @@ export default function FormUpdate({ medida, last_volume, url }) {
             medida === 'mm' ? transMedida = in_add
                 : medida === 'cm' ? transMedida = in_add * 1000
                     : transMedida = in_add * 1000000
+
+            var newVolume = last_volume + transMedida
+
             let res = await axios.post(`${url}/create`, {
-                // wtr_id: ,
+                wtr_id: null,
                 wtr_volume_mlt: transMedida,
                 wtr_add_remove: 1,
-                wtr_date: now(),
-                wtr_last_volume: last_volume + transMedida
+                // wtr_date: Date.now(),
+                wtr_last_volume: newVolume
             });
+            setAvailablemm(newVolume)
             Swal.fire(res.data.err ? res.data.err : res.data.msg);
 
         } catch (error) {
