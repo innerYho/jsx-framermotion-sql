@@ -4,12 +4,10 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 // import dotenv from 'dotenv';
 
-export default function FormUpdate({ medida, last_volume, setAvailablemm, url }) {
-    // const navigate = useNavigate()
-    // dotenv.config({ path: ".env" })
-    // const key = process.env.API_KEY;
-    // console.log(process.env.URL)
-
+export default function FormUpdate({ medida, last_volume, setAvailablemm,
+    setActivate,
+    // setPorcWater,
+    url }) {
     const [in_add, setIn_add] = useState('');
 
     const sendForm = async (e) => {
@@ -17,23 +15,28 @@ export default function FormUpdate({ medida, last_volume, setAvailablemm, url })
             var transMedida
             e.preventDefault()
             // e.target.reset()
-            // let res = await axios.post(`config.urlServer`,{
+            //transformar a mm3
             medida === 'mm' ? transMedida = in_add
                 : medida === 'cm' ? transMedida = in_add * 1000
                     : transMedida = in_add * 1000000
+            // console.log(in_add)
 
             var newVolume = last_volume + transMedida
+            if (newVolume >= 30000) {
+                Swal.fire("error", "No es posible pasar la medida del tanque")
+            } else {
 
-            let res = await axios.post(`${url}/create`, {
-                wtr_id: null,
-                wtr_volume_mlt: transMedida,
-                wtr_add_remove: 1,
-                // wtr_date: Date.now(),
-                wtr_last_volume: newVolume
-            });
-            setAvailablemm(newVolume)
-            Swal.fire(res.data.err ? res.data.err : res.data.msg);
-
+                let res = await axios.post(`${url}/create`, {
+                    wtr_id: null,
+                    wtr_volume_mlt: transMedida,
+                    wtr_add_remove: 1,
+                    // wtr_date: Date.now(),
+                    wtr_last_volume: newVolume
+                });
+                setAvailablemm(newVolume)
+                setActivate(true)
+                Swal.fire(res.data.err ? res.data.err : res.data.msg);
+            }
         } catch (error) {
             console.log(error)
         }

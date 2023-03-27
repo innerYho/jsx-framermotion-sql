@@ -18,8 +18,9 @@ export default function Water(
 
     const url = "http://localhost:9876"
     const [data, setData] = useState([]);
-    const [availablemm, setAvailablemm] = useState('');
+    const [availablemm, setAvailablemm] = useState(0);
     const [porcWater, setPorcWater] = useState('');
+    const [activate, setActivate] = useState(false);
 
     const y = useMotionValue(0)
     const backgroundColor = useTransform(y, [-100, 0, 100], ['#fff', '#999', '#000'])
@@ -28,15 +29,19 @@ export default function Water(
         try {
             // e.preventDefault();
             // e.event.stopPropagation();
-            // e.target.reset()
+            var tempVol
             let res = await axios.get(`${url}/search`)
             if (res.data.rows.length === 0) {
                 setData([])
             }
             else {
                 setData(res.data.rows)
-                setAvailablemm(res.data.rows[0].wtr_last_volume)
+                tempVol = res.data.rows[0].wtr_last_volume
+                setAvailablemm(tempVol)
+
                 console.log(data)
+
+                volumeWate(tempVol)
                 Swal.fire(res.data.err ? res.data.err : res.data.msg);
             }
         } catch (error) {
@@ -44,32 +49,34 @@ export default function Water(
         }
     }
     // searchData()
+    if (activate == true) {
+        searchData()
+    }
+
+    const volumeWate = (e) => {
+        var tempVol = e
+
+        setPorcWater(
+            tempVol < 2000 ?
+                '64' : (tempVol >= 2001 && tempVol <= 5000) ? '54'
+                    : (tempVol >= 5001 && tempVol <= 8000) ? '34'
+                        : (tempVol >= 8001 && tempVol <= 10000) ? '24'
+                            : (tempVol >= 10001 && tempVol <= 12000) ? '14'
+                                : (tempVol >= 12001 && tempVol <= 15000) ? '-14'
+                                    : (tempVol >= 15001 && tempVol <= 18000) ? '-24'
+                                        : (tempVol >= 18001 && tempVol <= 20000) ? '-24'
+                                            : (tempVol >= 20001 && tempVol <= 24000) ? '-44'
+                                                : (tempVol >= 24001 && tempVol <= 27000) ? '-54'
+                                                    : '-67'
+        )
+        setActivate(false)
+    }
+
+    // searchData()
     useEffect(() => {
         searchData()
         console.log(data)
     }, [])
-
-    useEffect(() => {
-        // Porcentaje nivel del agua
-        console.log(availablemm)
-
-        setPorcWater(
-            availablemm < 2000 ?
-                '64'
-                // : (availablemm >= 2001 && availablemm <= 5000) ? '54'
-                // : (availablemm >= 5001 && availablemm <= 8000) ? '34'
-                // : (availablemm >= 8001 && availablemm <= 10000) ? '24'
-                //     : (availablemm >= 10001 && availablemm <= 12000) ? '14'
-                //         : (availablemm >= 12001 && availablemm <= 15000) ? '-14'
-                //             : (availablemm >= 15001 && availablemm <= 18000) ? '-24'
-                //                 : (availablemm >= 18001 && availablemm <= 20000) ? '-24'
-                //                     : (availablemm >= 20001 && availablemm <= 24000) ? '-44'
-                //                         : (availablemm >= 24001 && availablemm <= 27000) ? '-54'
-                : '-67'
-        )
-    }, [])
-
-
 
     // framer-motion
     const variantsPorcent = {
@@ -101,6 +108,7 @@ export default function Water(
                             style={{
                                 backgroundColor: '#07538c',
                                 color: '#ccc',
+                                fontSize: '12px'
                             }}
                             animate={{
                                 y: ['65px', `${porcWater}px`], opacity: 0.8,
@@ -110,7 +118,21 @@ export default function Water(
                                 top: -100, bottom: 0
                             }}>
                             Nivel del agua
-
+                            {/* {availablemm} */}
+                            {availablemm == 0 ? 0 :
+                                (medida === "cm") ?
+                                    <>
+                                        <label className="lblWater"> {availablemm / 1000} cm</label>
+                                        <sup>3</sup>
+                                    </>
+                                    : (medida === "mm") ?
+                                        <>
+                                            <label> {availablemm / 1000} mm</label>
+                                            <sup>3</sup>
+                                        </>
+                                        :
+                                        <label> {availablemm / 1000} ltrs</label>
+                            }
                         </motion.button>
                     </motion.div>
 
@@ -142,10 +164,17 @@ export default function Water(
                     <label htmlFor="">Disponibilidad :  <strong>
                         {availablemm == 0 ? 0
                             : (medida === "cm") ?
-                                availablemm / 1000
+                                <>
+                                    <label>{availablemm / 1000} cm</label>
+                                    <sup>3</sup>
+                                </>
                                 : (medida === "mm") ?
-                                    availablemm
-                                    : availablemm / 1000000
+                                    <>
+                                        <label>{availablemm / 1000} mm</label>
+                                        <sup>3</sup>
+                                    </>
+                                    :
+                                    <label>{availablemm / 1000} ltrs</label>
                         }
                     </strong></label>
                 </div>
@@ -163,8 +192,11 @@ export default function Water(
 
 
             </div>
-            <h2>from pages</h2>
-            <FormUpdate medida={medida} last_volume={availablemm} setAvailablemm={setAvailablemm} url={url} />
+            {/* <h2>from pages</h2> */}
+            <FormUpdate medida={medida} last_volume={availablemm} setAvailablemm={setAvailablemm}
+                setActivate={setActivate}
+                // setPorcWater={setPorcWater}
+                url={url} />
         </>
     )
 }
