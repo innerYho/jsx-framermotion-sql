@@ -55,9 +55,8 @@ export default function Water(
 
     const volumeWate = (e) => {
         var tempVol = e
-
         setPorcWater(
-            tempVol < 2000 ?
+            (tempVol > 0 && tempVol < 2000 || tempVol === null) ?
                 '64' : (tempVol >= 2001 && tempVol <= 5000) ? '54'
                     : (tempVol >= 5001 && tempVol <= 8000) ? '34'
                         : (tempVol >= 8001 && tempVol <= 10000) ? '24'
@@ -69,6 +68,7 @@ export default function Water(
                                                 : (tempVol >= 24001 && tempVol <= 27000) ? '-54'
                                                     : '-67'
         )
+
         setActivate(false)
     }
 
@@ -110,6 +110,7 @@ export default function Water(
                                 color: '#ccc',
                                 fontSize: '12px'
                             }}
+                            initial={{ y: '65px' }}
                             animate={{
                                 y: ['65px', `${porcWater}px`], opacity: 0.8,
                             }}
@@ -118,8 +119,8 @@ export default function Water(
                                 top: -100, bottom: 0
                             }}>
                             Nivel del agua
-                            {/* {availablemm} */}
-                            {availablemm == 0 ? 0 :
+                            {
+                                // availablemm == 0 ? 0 :
                                 (medida === "cm") ?
                                     <>
                                         <label className="lblWater"> {availablemm / 1000} cm</label>
@@ -127,11 +128,11 @@ export default function Water(
                                     </>
                                     : (medida === "mm") ?
                                         <>
-                                            <label> {availablemm / 1000} mm</label>
+                                            <label> {availablemm} mm</label>
                                             <sup>3</sup>
                                         </>
                                         :
-                                        <label> {availablemm / 1000} ltrs</label>
+                                        <label> {availablemm / 1000000} ltrs</label>
                             }
                         </motion.button>
                     </motion.div>
@@ -162,19 +163,19 @@ export default function Water(
                 </div>
                 <div className="form-group col-md-4">
                     <label htmlFor="">Disponibilidad :  <strong>
-                        {availablemm == 0 ? 0
-                            : (medida === "cm") ?
+                        {
+                            (medida === "cm") ?
                                 <>
                                     <label>{availablemm / 1000} cm</label>
                                     <sup>3</sup>
                                 </>
                                 : (medida === "mm") ?
                                     <>
-                                        <label>{availablemm / 1000} mm</label>
+                                        <label>{availablemm} mm</label>
                                         <sup>3</sup>
                                     </>
                                     :
-                                    <label>{availablemm / 1000} ltrs</label>
+                                    <label>{availablemm / 1000000} ltrs</label>
                         }
                     </strong></label>
                 </div>
