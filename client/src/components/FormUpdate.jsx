@@ -16,7 +16,7 @@ export default function FormUpdate({ medida, last_volume, setAvailablemm,
             e.preventDefault()
             // e.target.reset()
             //transformar a mm3
-            medida === 'mm' ? transMedida = in_add
+            medida === 'mm' ? transMedida = in_add * 1
                 : medida === 'cm' ? transMedida = in_add * 1000
                     : transMedida = in_add * 1000000
             // console.log(in_add)
